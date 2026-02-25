@@ -23,6 +23,28 @@
 	<script type="text/javascript" src="./Funkin.js"></script>
 	
 	<script>
+		// 1. FORCE LOW QUALITY IN BROWSER STORAGE (Run this first!)
+(function() {
+    try {
+        // This targets the common save locations for FNF web ports
+        const lowQualSettings = {
+            lowQual: true,
+            antialiasing: false,
+            flashing: false,
+            shaders: false,
+            cacheCharacters: false
+        };
+
+        // We save it to 'Funkin' (Psych Engine) and 'KadeEngine' just to be safe
+        localStorage.setItem('PsychEngine_preferences', JSON.stringify(lowQualSettings));
+        localStorage.setItem('KadeEngine_settings', JSON.stringify(lowQualSettings));
+        
+        console.log("Low Quality Forced: ON");
+    } catch (e) {
+        console.log("Could not force settings: ", e);
+    }
+})();
+
 		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, { capture: false, passive: false });
 		if (typeof window.devicePixelRatio != 'undefined' && window.devicePixelRatio > 2) {
 			var meta = document.getElementById ("viewport");
