@@ -272,34 +272,34 @@
 		lime.embed ("Funkin", "openfl-content", 1280, 720, { parameters: {} });
 	</script>
 	<style>
-  /* Base button style for gameplay arrows */
+  /* Large Square Gameplay Buttons */
   .touch-btn { 
-    position: fixed; width: 85px; height: 85px; 
-    background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; border-radius: 50%; 
+    position: fixed; width: 110px; height: 110px; 
+    background: rgba(255, 255, 255, 0.15); border: 3px solid #fff; border-radius: 12px; 
     display: flex; align-items: center; justify-content: center; 
-    font-weight: bold; color: white; font-size: 24px;
+    font-weight: bold; color: white; font-size: 32px;
     user-select: none; touch-action: manipulation; z-index: 9999;
+    top: 50%; transform: translateY(-50%);
   }
 
-  /* LEFT HAND SIDE (Left and Down) */
-  #btn-left { left: 40px; bottom: 120px; }
-  #btn-down { left: 140px; bottom: 40px; }
+  /* LEFT HAND (Centered Vertically) */
+  #btn-left { left: 30px; }
+  #btn-down { left: 150px; }
 
-  /* RIGHT HAND SIDE (Up and Right - Mirrored) */
-  #btn-right { right: 40px; bottom: 120px; }
-  #btn-up    { right: 140px; bottom: 40px; }
+  /* RIGHT HAND (Centered Vertically) */
+  #btn-right { right: 30px; }
+  #btn-up    { right: 150px; }
 
-  /* SYSTEM BUTTONS (ESC at Top, ENTER at Bottom) */
+  /* SYSTEM BUTTONS (Stays Top/Bottom Center) */
   .sys-btn {
     position: fixed; left: 50%; transform: translateX(-50%);
-    width: 100px; height: 45px; 
-    border: 1px solid #fff; border-radius: 8px;
-    color: white; font-size: 14px; font-weight: bold;
+    width: 140px; height: 55px; background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #fff; border-radius: 8px;
+    color: white; font-size: 18px; font-weight: bold;
     display: flex; align-items: center; justify-content: center; z-index: 9999;
-    user-select: none; touch-action: manipulation;
   }
-  #btn-esc   { top: 20px; background: rgba(150, 0, 0, 0.7); }
-  #btn-enter { bottom: 20px; background: rgba(0, 150, 0, 0.7); }
+  #btn-esc   { top: 15px; background: rgba(150, 0, 0, 0.6); }
+  #btn-enter { bottom: 15px; background: rgba(0, 150, 0, 0.6); }
 </style>
 
 <div class="touch-btn" id="btn-left">L</div>
@@ -324,15 +324,11 @@
     const btn = document.getElementById(id);
     const triggerKey = (type) => {
       const event = new KeyboardEvent(type, {
-        key: keys[id].key,
-        keyCode: keys[id].code,
-        which: keys[id].code,
-        bubbles: true,
-        cancelable: true
+        key: keys[id].key, keyCode: keys[id].code, which: keys[id].code,
+        bubbles: true, cancelable: true
       });
       window.dispatchEvent(event);
     };
-
     btn.addEventListener('touchstart', (e) => { e.preventDefault(); triggerKey('keydown'); });
     btn.addEventListener('touchend', (e) => { e.preventDefault(); triggerKey('keyup'); });
   });
