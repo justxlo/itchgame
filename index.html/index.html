@@ -271,21 +271,36 @@
 	<script type="text/javascript">
 		lime.embed ("Funkin", "openfl-content", 1280, 720, { parameters: {} });
 	</script>
-	<script src="https://cdn.jsdelivr.net/gh/austinhallock/html5-virtual-game-controller@master/game-controller.js"></script>
+	<style>
+  .mobile-controls { position: fixed; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; z-index: 9999; }
+  .touch-btn { width: 65px; height: 65px; background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; user-select: none; touch-action: manipulation; }
+</style>
+
+<div class="mobile-controls">
+  <div class="touch-btn" id="btn-left">L</div>
+  <div class="touch-btn" id="btn-down">D</div>
+  <div class="touch-btn" id="btn-up">U</div>
+  <div class="touch-btn" id="btn-right">R</div>
+</div>
+
 <script>
-  GameController.init({
-    left: {
-      type: 'dpad',
-      position: { left: '15%', bottom: '15%' },
-      dpad: {
-        up: { touchStart: function() { window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowUp'})); } },
-        down: { touchStart: function() { window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowDown'})); } },
-        left: { touchStart: function() { window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowLeft'})); } },
-        right: { touchStart: function() { window.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'})); } }
-      }
-    }
+  const keys = { 'btn-left': 'ArrowLeft', 'btn-down': 'ArrowDown', 'btn-up': 'ArrowUp', 'btn-right': 'ArrowRight' };
+  Object.keys(keys).forEach(id => {
+    const btn = document.getElementById(id);
+    const triggerKey = (type) => {
+      const event = new KeyboardEvent(type, {
+        key: keys[id],
+        keyCode: (id === 'btn-left' ? 37 : id === 'btn-up' ? 38 : id === 'btn-right' ? 39 : 40),
+        which: (id === 'btn-left' ? 37 : id === 'btn-up' ? 38 : id === 'btn-right' ? 39 : 40),
+        bubbles: true
+      });
+      window.dispatchEvent(event);
+    };
+    btn.addEventListener('touchstart', (e) => { e.preventDefault(); triggerKey('keydown'); });
+    btn.addEventListener('touchend', (e) => { e.preventDefault(); triggerKey('keyup'); });
   });
 </script>
+
 
 </body>
 </html>
