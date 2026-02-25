@@ -271,40 +271,44 @@
 	<script type="text/javascript">
 		lime.embed ("Funkin", "openfl-content", 1280, 720, { parameters: {} });
 	</script>
-	<style>
-  /* Base button style */
+<style>
+  /* Base button style for gameplay arrows */
   .touch-btn { 
-    position: fixed; width: 80px; height: 80px; 
+    position: fixed; width: 85px; height: 85px; 
     background: rgba(0, 0, 0, 0.5); border: 2px solid #fff; border-radius: 50%; 
     display: flex; align-items: center; justify-content: center; 
     font-weight: bold; color: white; font-size: 24px;
     user-select: none; touch-action: manipulation; z-index: 9999;
-    transform: translateY(-50%); /* Keeps them centered vertically */
   }
 
-  /* Left Side: Left and Down */
-  #btn-left { left: 20px; top: 40%; }
-  #btn-down { left: 110px; top: 60%; }
+  /* LEFT HAND SIDE (Left and Down) */
+  #btn-left { left: 40px; bottom: 120px; }
+  #btn-down { left: 140px; bottom: 40px; }
 
-  /* Right Side: Up and Right */
-  #btn-up { right: 110px; top: 40%; }
-  #btn-right { right: 20px; top: 60%; }
+  /* RIGHT HAND SIDE (Up and Right - Mirrored) */
+  #btn-right { right: 40px; bottom: 120px; }
+  #btn-up    { right: 140px; bottom: 40px; }
 
-  /* Enter Button: Bottom Right */
-  #btn-enter { 
-    position: fixed; bottom: 20px; right: 20px; 
-    width: 100px; height: 50px; border-radius: 10px;
-    background: rgba(0, 150, 0, 0.7); border: 2px solid #fff;
-    color: white; font-weight: bold; display: flex;
-    align-items: center; justify-content: center; z-index: 9999;
+  /* SYSTEM BUTTONS (ESC at Top, ENTER at Bottom) */
+  .sys-btn {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    width: 100px; height: 45px; 
+    border: 1px solid #fff; border-radius: 8px;
+    color: white; font-size: 14px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+    user-select: none; touch-action: manipulation;
   }
+  #btn-esc   { top: 20px; background: rgba(150, 0, 0, 0.7); }
+  #btn-enter { bottom: 20px; background: rgba(0, 150, 0, 0.7); }
 </style>
 
 <div class="touch-btn" id="btn-left">L</div>
 <div class="touch-btn" id="btn-down">D</div>
 <div class="touch-btn" id="btn-up">U</div>
 <div class="touch-btn" id="btn-right">R</div>
-<div id="btn-enter">ENTER</div>
+
+<div class="sys-btn" id="btn-esc">ESC</div>
+<div class="sys-btn" id="btn-enter">ENTER</div>
 
 <script>
   const keys = { 
@@ -312,7 +316,8 @@
     'btn-down': { key: 'ArrowDown', code: 40 }, 
     'btn-up': { key: 'ArrowUp', code: 38 }, 
     'btn-right': { key: 'ArrowRight', code: 39 },
-    'btn-enter': { key: 'Enter', code: 13 } 
+    'btn-enter': { key: 'Enter', code: 13 },
+    'btn-esc': { key: 'Escape', code: 27 } 
   };
 
   Object.keys(keys).forEach(id => {
@@ -322,7 +327,8 @@
         key: keys[id].key,
         keyCode: keys[id].code,
         which: keys[id].code,
-        bubbles: true
+        bubbles: true,
+        cancelable: true
       });
       window.dispatchEvent(event);
     };
