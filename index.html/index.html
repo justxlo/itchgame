@@ -272,6 +272,12 @@
 		lime.embed ("Funkin", "openfl-content", 1280, 720, { parameters: {} });
 	</script>
 	<style>
+
+if (window.FlxG) {
+    window.FlxG.save.data.lowQual = true;
+    window.FlxG.save.flush();
+}
+
   /* Large Square Gameplay Buttons */
   .touch-btn { 
     position: fixed; width: 110px; height: 110px; 
