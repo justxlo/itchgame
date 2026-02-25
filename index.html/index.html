@@ -272,5 +272,95 @@
 		lime.embed ("Funkin", "openfl-content", 1280, 720, { parameters: {} });
 	</script>
 	
+	<style>
+  /* Gameplay Buttons - Big Squares */
+  .touch-btn { 
+    position: fixed; width: 110px; height: 110px; 
+    background: rgba(255, 255, 255, 0.15); border: 3px solid #fff; border-radius: 12px; 
+    display: flex; align-items: center; justify-content: center; 
+    font-weight: bold; color: white; font-size: 32px;
+    user-select: none; touch-action: manipulation; z-index: 9999;
+  }
+
+  /* LEFT HAND (Left and Down - Lowered) */
+  #btn-left { left: 40px;  bottom: 150px; }
+  #btn-down { left: 160px; bottom: 40px; }
+
+  /* RIGHT HAND (Up and Right - Mirrored) */
+  #btn-right { right: 40px;  bottom: 150px; }
+  #btn-up    { right: 160px; bottom: 40px; }
+
+  /* SYSTEM BUTTONS (Centered) */
+  .sys-btn {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 50px; border: 2px solid #fff; border-radius: 8px;
+    color: white; font-size: 18px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+  }
+  #btn-esc   { top: 15px; background: rgba(150, 0, 0, 0.6); }
+  #btn-enter { bottom: 15px; background: rgba(0, 150, 0, 0.6); }
+</style>
+
+<div class="touch-btn" id="btn-left">L</div>
+<div class="touch-btn" id="btn-down">D</div>
+<div class="touch-btn" id="btn-up">U</div>
+<div class="touch-btn" id="btn-right">R</div>
+<div class="sys-btn" id="btn-esc">ESC</div>
+<div class="sys-btn" id="btn-enter">ENTER</div>
+
+<script>
+  // 1. MEMORY & AUDIO FIXES (Run immediately)
+  window.addEventListener('load', function() {
+    // Force Low Quality for iPad/iPhone
+    if (window.FlxG) {
+        window.FlxG.save.data.lowQual = true;
+        window.FlxG.save.data.antialiasing = false;
+        window.FlxG.save.flush();
+    }
+  });
+
+  // Wake up Audio on iPhone/iPad tap
+  window.addEventListener('touchstart', function() {
+    const audioCtx = window.AudioContext || window.webkitAudioContext;
+    if (audioCtx) {
+      const context = new audioCtx();
+      if (context.state === 'suspended') context.resume();
+    }
+  }, {once: true});
+
+  // 2. BUTTON LOGIC
+  const keys = { 
+    'btn-left': { key: 'ArrowLeft', code: 37 }, 
+    'btn-down': { key: 'ArrowDown', code: 40 }, 
+    'btn-up': { key: 'ArrowUp', code: 38 }, 
+    'btn-right': { key: 'ArrowRight', code: 39 },
+    'btn-enter': { key: 'Enter', code: 13 },
+    'btn-esc': { key: 'Escape', code: 27 } 
+  };
+
+  Object.keys(keys).forEach(id => {
+    const btn = document.getElementById(id);
+    const triggerKey = (type) => {
+      const event = new KeyboardEvent(type, {
+        key: keys[id].key, keyCode: keys[id].code, which: keys[id].code,
+        bubbles: true, cancelable: true
+      });
+      window.dispatchEvent(event);
+    };
+
+    btn.addEventListener('touchstart', (e) => { 
+      e.preventDefault(); 
+      triggerKey('keydown'); 
+      btn.style.backgroundColor = "rgba(255, 255, 255, 0.4)"; // Visual tap feedback
+    });
+    
+    btn.addEventListener('touchend', (e) => { 
+      e.preventDefault(); 
+      triggerKey('keyup'); 
+      btn.style.backgroundColor = "rgba(255, 255, 255, 0.15)";
+    });
+  });
+</script>
+
 </body>
 </html>
